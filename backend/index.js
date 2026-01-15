@@ -2,12 +2,11 @@ import express from "express";
 import cors from "cors";
 
 const app = express();
-const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
 
-// Dummy items data
+
 const items = [
     {
         id: "1",
@@ -113,38 +112,31 @@ const items = [
     },
 ];
 
-export default items;
 
-// Root test
+// test route
 app.get("/", (req, res) => {
-  res.send("Express API is running");
+  res.send("Express API is running on Vercel 🚀");
 });
 
-// GET all items
 app.get("/items", (req, res) => {
   res.json(items);
 });
 
-// GET single item
 app.get("/items/:id", (req, res) => {
-  const item = items.find((i) => i.id === req.params.id);
+  const item = items.find(i => i.id === req.params.id);
   if (!item) {
     return res.status(404).json({ message: "Item not found" });
   }
   res.json(item);
 });
 
-// POST add new item
 app.post("/items", (req, res) => {
   const newItem = {
     id: Date.now().toString(),
     ...req.body,
   };
-
   items.push(newItem);
   res.status(201).json(newItem);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+export default app;
